@@ -1,22 +1,28 @@
 # ringbuffer
 
-[![License](https://img.shields.io/:license-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![GoDoc](https://godoc.org/github.com/smallnest/ringbuffer?status.png)](http://godoc.org/github.com/smallnest/ringbuffer)  [![travis](https://travis-ci.org/smallnest/ringbuffer.svg?branch=master)](https://travis-ci.org/smallnest/ringbuffer) [![Go Report Card](https://goreportcard.com/badge/github.com/smallnest/ringbuffer)](https://goreportcard.com/report/github.com/smallnest/ringbuffer) [![coveralls](https://coveralls.io/repos/smallnest/ringbuffer/badge.svg?branch=master&service=github)](https://coveralls.io/github/smallnest/ringbuffer?branch=master) 
+[![Go Reference](https://pkg.go.dev/badge/github.com/ananthb/ringbuffer.svg)](https://pkg.go.dev/github.com/ananthb/ringbuffer) [![CI](https://github.com/ananthb/ringbuffer/actions/workflows/ci.yml/badge.svg)](https://github.com/ananthb/ringbuffer/actions/workflows/ci.yml)
 
-A circular buffer (ring buffer) in Go, implemented io.ReaderWriter interface
+A circular buffer (ring buffer) in Go, implementing standard Go interfaces
+for reads and writes.
 
-[![wikipedia](Circular_Buffer_Animation.gif)](https://github.com/smallnest/ringbuffer)
-
+[![Ring Buffer](circular_buffer_animation.gif)](https://github.com/smallnest/ringbuffer)
 
 ```go
-	rb := New(1024)
+  rb := New(1024)
 
-	// write
-	rb.Write([]byte("abcd"))
-	fmt.Println(rb.Length())
-	fmt.Println(rb.Free())
+  // write
+  rb.Write([]byte("abcd"))
+  fmt.Println(rb.Length())
+  fmt.Println(rb.Free())
 
-	// read
-	buf := make([]byte, 4)
-	rb.Read(buf)
-	fmt.Println(string(buf))
+  // read
+  buf := make([]byte, 4)
+  rb.Read(buf)
+  fmt.Println(string(buf))
 ```
+
+## [LICENSE](LICENSE)
+
+Copyright (c) 2019 smallnest, 2023 Ananth Bhaskararaman
+
+ringbuffer is available under the terms of the MIT license.

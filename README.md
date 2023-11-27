@@ -1,6 +1,6 @@
 # ringbuffer
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/ananthb/ringbuffer.svg)](https://pkg.go.dev/github.com/ananthb/ringbuffer) [![CI](https://github.com/ananthb/ringbuffer/actions/workflows/ci.yml/badge.svg)](https://github.com/ananthb/ringbuffer/actions/workflows/ci.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/ananthb/ringbuffer.svg)](https://pkg.go.dev/github.com/ananthb/ringbuffer) [![CI](https://github.com/ananthb/ringbuffer/actions/workflows/go.yml/badge.svg)](https://github.com/ananthb/ringbuffer/actions/workflows/go.yml)
 
 A circular buffer (ring buffer) in Go, implementing standard Go interfaces
 for reads and writes.

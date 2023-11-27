@@ -6,6 +6,7 @@ package ringbuffer
 
 import (
 	"bytes"
+	"errors"
 	"io"
 	"strings"
 	"testing"
@@ -96,7 +97,7 @@ func TestRingBuffer_Write(t *testing.T) {
 	if err == nil {
 		t.Fatalf("expect an error but got nil. n=%d, r.w=%d, r.r=%d", n, rb.w, rb.r)
 	}
-	if err != ErrFull {
+	if !errors.Is(err, ErrFull) {
 		t.Fatalf("expect ErrIsFull but got nil")
 	}
 	if n != 0 {
@@ -235,7 +236,7 @@ func TestRingBuffer_Read(t *testing.T) {
 	if err == nil {
 		t.Fatalf("expect an error but got nil")
 	}
-	if err != ErrEmpty {
+	if !errors.Is(err, ErrEmpty) {
 		t.Fatalf("expect ErrIsEmpty but got nil")
 	}
 	if n != 0 {

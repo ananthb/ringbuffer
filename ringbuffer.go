@@ -42,12 +42,8 @@ func (r *RingBuffer) Read(p []byte) (n int, err error) {
 	}
 
 	r.mu.Lock()
-	n, err = r.read(p)
-	r.mu.Unlock()
-	return n, err
-}
+	defer r.mu.Unlock()
 
-func (r *RingBuffer) read(p []byte) (n int, err error) {
 	if r.w == r.r && !r.isFull {
 		return 0, ErrEmpty
 	}
@@ -70,6 +66,7 @@ func (r *RingBuffer) read(p []byte) (n int, err error) {
 	if r.r+n <= r.size {
 		copy(p, r.buf[r.r:r.r+n])
 	} else {
+		// Buffer wraps around. Read in two parts.
 		c1 := r.size - r.r
 		copy(p, r.buf[r.r:r.size])
 		c2 := n - c1
@@ -79,14 +76,15 @@ func (r *RingBuffer) read(p []byte) (n int, err error) {
 
 	r.isFull = false
 
-	return n, err
+	return
 }
 
 // ReadByte reads and returns the next byte from the input or ErrEmpty.
 func (r *RingBuffer) ReadByte() (b byte, err error) {
 	r.mu.Lock()
+	defer r.mu.Unlock()
+
 	if r.w == r.r && !r.isFull {
-		r.mu.Unlock()
 		return 0, ErrEmpty
 	}
 	b = r.buf[r.r]
@@ -96,7 +94,6 @@ func (r *RingBuffer) ReadByte() (b byte, err error) {
 	}
 
 	r.isFull = false
-	r.mu.Unlock()
 	return b, err
 }
 
@@ -106,14 +103,10 @@ func (r *RingBuffer) Write(p []byte) (n int, err error) {
 	if len(p) == 0 {
 		return 0, nil
 	}
+
 	r.mu.Lock()
-	n, err = r.write(p)
-	r.mu.Unlock()
+	defer r.mu.Unlock()
 
-	return n, err
-}
-
-func (r *RingBuffer) write(p []byte) (n int, err error) {
 	if r.isFull {
 		return 0, ErrFull
 	}
@@ -160,12 +153,8 @@ func (r *RingBuffer) write(p []byte) (n int, err error) {
 // WriteByte writes one byte into buffer, and returns ErrFull if buffer is full.
 func (r *RingBuffer) WriteByte(c byte) error {
 	r.mu.Lock()
-	err := r.writeByte(c)
-	r.mu.Unlock()
-	return err
-}
+	defer r.mu.Unlock()
 
-func (r *RingBuffer) writeByte(c byte) error {
 	if r.w == r.r && r.isFull {
 		return ErrFull
 	}
